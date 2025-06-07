@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LoannSMP</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Loader avec particules -->
+  <div id="loader">
+    <span class="loader-dot-grow"></span>
+  </div>
+  <div class="main-flex">
+    <div class="container" style="opacity:0;">
+      <h1>LoannSMP</h1>
+      <div class="subtitle" id="subtitle">Serveur Minecraft Survie Moddé entre potes</div>
+      <div class="status-block" id="status-block">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">Status : ...</span>
+      </div>
+      <div class="infos-smp">
+        <div class="ip-block">
+          <span class="ip-label">IP :</span>
+          <span class="ip-value" id="ip-value" style="cursor:default;">Arrive bientôt</span>
+        </div>
+        <div class="version-block">
+          <span class="version-label">Version :</span>
+          <span class="version-value">1.20+ Moddé</span>
+        </div>
+      </div>
+      <div class="buttons-row">
+        <button class="contact-btn" onclick="window.open('https://discord.gg/Y7uwTgYcAc','_blank')">Discord</button>
+        <label for="toggle-infos" class="contact-btn" tabindex="0" style="cursor:pointer;">Infos</label>
+      </div>
+      <input type="checkbox" id="toggle-infos" hidden>
+      <div class="infos-popup">
+        <div class="infos-popup-content">
+          <h2>À propos du serveur</h2>
+          <p>
+            LoannSMP est un serveur Minecraft moddé entre amis.<br>
+            Version : 1.20+ Moddé<br>
+            IP : Arrive bientôt<br>
+            Créé par Loann et ses potes.<br>
+            <br>
+            Pour toute question, rejoins le Discord !
+          </p>
+          <label for="toggle-infos" class="contact-btn" style="margin-top:1em;cursor:pointer;">OK</label>
+        </div>
+      </div>
+      <div class="footer">
+        © 2025 LoannSMP — J'ai appris à coder en HTML juste pour ce site...
+      </div>
+    </div>
+    <!-- Nouvelle fenêtre de téléchargement -->
+    <!--
+    <div class="download-popup">
+      <h1>Téléchargement</h1>
+      <div class="subtitle">Ici tu pourras bientôt télécharger le modpack !</div>
+      <div class="buttons-row">
+      </div>
+    </div>
+    -->
+  </div>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      // Loader avec particules puis bg orange puis fade out
+      const loader = document.getElementById('loader');
+      const container = document.querySelector('.container');
+      setTimeout(() => {
+        loader.classList.add('expand');
+        setTimeout(() => {
+          loader.classList.add('fade-out');
+          setTimeout(() => {
+            loader.style.display = 'none';
+            container.style.opacity = 1;
+            container.classList.add('show-anim');
+          }, 700);
+        }, 900);
+      }, 900);
+
+      // Applique le thème orange de base
+      document.body.style.background = "#111";
+      document.body.style.color = "#fff";
+      document.querySelectorAll('.contact-btn').forEach(btn => {
+        btn.style.background = "linear-gradient(90deg, #ff9100 60%, #ffb300 100%)";
+        btn.style.color = "#111";
+        btn.onmouseenter = () => btn.style.background = "linear-gradient(90deg, #ffe0a3 60%, #fff3cd 100%)";
+        btn.onmouseleave = () => btn.style.background = "linear-gradient(90deg, #ff9100 60%, #ffb300 100%)";
+      });
+
+      // --- Konami Code Easter Egg ---
+      let konami = [38,38,40,40,37,39,37,39,66,65], kpos = 0;
+      window.addEventListener('keydown', e => {
+        if (e.keyCode === konami[kpos]) {
+          kpos++;
+          if (kpos === konami.length) {
+            showLoannCodesPopup();
+            kpos = 0;
+          }
+        } else {
+          kpos = 0;
+        }
+      });
+
+      // Fonction pour afficher le popup LoannCodes
+      function showLoannCodesPopup() {
+        // Overlay noir qui prend toute la page
+        let overlay = document.createElement('div');
+        overlay.style.position = "fixed";
+        overlay.style.left = "0";
+        overlay.style.top = "0";
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.background = "#000";
+        overlay.style.zIndex = "99998";
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "column";
+        overlay.style.justifyContent = "center";
+        overlay.style.alignItems = "center";
+        overlay.style.animation = "fadeInOverlay 0.3s";
+        document.body.appendChild(overlay);
+
+        // Terminal qui prend toute la largeur
+        let terminal = document.createElement('div');
+        terminal.style.width = "100vw";
+        terminal.style.height = "100vh";
+        terminal.style.display = "flex";
+        terminal.style.flexDirection = "column";
+        terminal.style.justifyContent = "center";
+        terminal.style.alignItems = "center";
+        terminal.style.background = "transparent";
+        terminal.style.color = "#00ff00";
+        terminal.style.fontFamily = "Fira Mono, monospace";
+        terminal.style.fontSize = "1.2em";
+        terminal.innerHTML = `
+          <div style="width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;">
+            <div id="terminal-output" style="background:#181818;border-radius:12px;padding:1.5em;min-height:120px;max-height:40vh;overflow-y:auto;margin-bottom:1.2em;font-size:1em;width:100%;">
+              <div style="color:#0f0;">LoannSMP Terminal<br>
+              Comment t'as trouvé ça ??</div>
+            </div>
+            <div style="display:flex;gap:0.5em;justify-content:center;align-items:center;width:100%;">
+              <span style="color:#00ff00;font-weight:bold;">$</span>
+              <input id="terminal-input" type="text" autocomplete="off" style="flex:1;background:#222;border:none;color:#0f0;font-size:1em;padding:0.7em 1em;border-radius:8px;outline:none;">
+              <button id="terminal-enter" style="background:#00ff00;color:#111;border:none;border-radius:8px;padding:0.7em 1.5em;font-weight:bold;cursor:pointer;">Entrer</button>
+            </div>
+          </div>
+        `;
+        overlay.appendChild(terminal);
+
+        // Fermer le terminal
+        document.getElementById('terminal-close').onclick = () => overlay.remove();
+        overlay.onclick = e => {
+          if (e.target === overlay) overlay.remove();
+        };
+
+        // Terminal logic
+        const output = document.getElementById('terminal-output');
+        const input = document.getElementById('terminal-input');
+        const enterBtn = document.getElementById('terminal-enter');
+
+        function printLine(text, color="#0f0") {
+          const line = document.createElement('div');
+          line.textContent = text;
+          line.style.color = color;
+          output.appendChild(line);
+          output.scrollTop = output.scrollHeight;
+        }
+
+        function handleCommand(cmd) {
+          const val = cmd.trim().toLowerCase();
+          printLine("$ " + cmd, "#00ff00");
+          if (!val) return;
+          // Commandes custom
+          if (val === "gamemode creative") {
+            printLine("-1355334 social credits", "#e53935");
+          } else if (val === "help") {
+            printLine("J'ai ton IP.", "#ffb300");
+          } else if (val === "op me") {
+            printLine("Code : qCfhXQQtHynE", "#4caf50");
+          } else if (val === "clear") {
+            output.innerHTML = "";
+          } else if (val === "exit" || val === "quit") {
+            overlay.remove();
+          } else {
+            printLine("Commande inconnue.", "#fff");
+          }
+        }
+
+        enterBtn.onclick = () => {
+          handleCommand(input.value);
+          input.value = "";
+          input.focus();
+        };
+        input.addEventListener('keydown', e => {
+          if (e.key === "Enter") {
+            handleCommand(input.value);
+            input.value = "";
+          }
+        });
+
+        input.focus();
+      }
+
+      // Ajoute les animations CSS dynamiquement
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes popIn {
+          from { opacity:0; transform:translate(-50%,-50%) scale(0.8);}
+          to   { opacity:1; transform:translate(-50%,-50%) scale(1);}
+        }
+        @keyframes fadeInOverlay {
+          from { opacity:0;}
+          to   { opacity:1;}
+        }
+      `;
+      document.head.appendChild(style);
+
+      // --- Status Fix (optionnel, à adapter selon ton JS backend) ---
+      // Si tu veux afficher un vrai status, il faut un backend ou une API Minecraft.
+      // Ici, on laisse "Status : ..." par défaut.
+
+      document.getElementById('status-dot').style.background = "#e53935";
+      document.getElementById('status-text').textContent = "Status : Offline";
+
+      // Tableau de phrases aléatoires
+      const phrases = [
+        "tkt frr on jette 2 diamants dans la lave et on se le give",
+        "MEC FAUT ABSOLUMENT INSTALLER AVARITIA",
+        "y'a au moins 10 easter egg sur ce site hein",
+        "faut installer draconic evolution sinon je viens pas !!1!",
+        "oui jtm bifurlo",
+        "on a plus de budget pour cette saison donc ce site mine des cryptomonnaies",
+        "trop drole quoi (feur)",
+        "au nom de la loi, je te ban pour 1 an",
+        "t'as pas le droit de faire ça, c'est pas legit'",
+        "pas d'inspi",
+        "0 secrets tkt",
+        "celle ci va durer tkt",
+        "c'est pas un easter egg, c'est un bug",
+        "serveur optimisé pour les rtx 5090",
+        "j'ai pas de vie, j'ai codé ce site",
+        "oui c aléatoire",
+        "nigger",
+        "je suis pas raciste mais...",
+        "mec cette fois-ci on se give pas de stuff",
+        "nigger",
+        "c'est rien c'est juste un easter egg",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "A partir de maintenant, tous les joueurs devront payer 34.65€ pour jouer car on a plus de budget",
+        "t'as pas le droit de faire ça, c'est pas legit'",
+        "PAS DE WURST ON A DIT",
+        "au nom jsuis pas gay",
+        "C'EST BANNI",
+        "HAUT HAUT BAS BAS GAUCHE DROITE GAUCHE DROITE B A",
+        "je suis pas raciste mais...",
+        "t'as pas le droit de faire ça, c'est pas legit'",
+        "je suis pas raciste mais...",
+        "je suis PAS RACISTE MERDE",
+        "azz c bon toi t'es ban def",
+        "cette fois-ci on se give pas de stuff",
+        "tkt frr on jette 2 diamants dans la lave et on se le give",
+        "tkt frr on jette 2 diamants dans la lave et on se le give",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
+        "saison 2524425"
+      ];
+
+      // Remplace le texte du sous-titre par une phrase aléatoire
+      const subtitle = document.getElementById('subtitle');
+      if (subtitle) {
+        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+        subtitle.textContent = randomPhrase;
+      }
+
+      // Gestion du toggle Infos
+      const toggleInfos = document.getElementById('toggle-infos');
+      const infosPanel = document.querySelector('.infos-popup');
+
+      toggleInfos.addEventListener('change', () => {
+        if (toggleInfos.checked) {
+          infosPanel.style.display = 'flex';
+          setTimeout(() => infosPanel.style.opacity = '1', 10);
+        } else {
+          infosPanel.style.opacity = '0';
+          setTimeout(() => infosPanel.style.display = 'none', 300);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

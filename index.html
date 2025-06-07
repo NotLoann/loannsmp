@@ -32,22 +32,7 @@
       </div>
       <div class="buttons-row">
         <button class="contact-btn" onclick="window.open('https://discord.gg/Y7uwTgYcAc','_blank')">Discord</button>
-        <label for="toggle-infos" class="contact-btn" tabindex="0" style="cursor:pointer;">Infos</label>
-      </div>
-      <input type="checkbox" id="toggle-infos" hidden>
-      <div class="infos-popup">
-        <div class="infos-popup-content">
-          <h2>À propos du serveur</h2>
-          <p>
-            LoannSMP est un serveur Minecraft moddé entre amis.<br>
-            Version : 1.20+ Moddé<br>
-            IP : Arrive bientôt<br>
-            Créé par Loann et ses potes.<br>
-            <br>
-            Pour toute question, rejoins le Discord !
-          </p>
-          <label for="toggle-infos" class="contact-btn" style="margin-top:1em;cursor:pointer;">OK</label>
-        </div>
+        <button class="contact-btn" id="suggestion-btn" type="button">Suggestions</button>
       </div>
       <div class="footer">
         © 2025 LoannSMP — J'ai appris à coder en HTML juste pour ce site...
@@ -62,6 +47,21 @@
       </div>
     </div>
     -->
+  </div> <!-- fin de .main-flex -->
+  <div id="suggestion-popup" class="suggestion-popup">
+    <div class="suggestion-popup-content">
+      <h2>Suggestion</h2>
+      <form id="suggestion-form" autocomplete="off">
+        <input id="suggestion-pseudo" type="text" placeholder="Pseudo" required>
+        <textarea id="suggestion-text" placeholder="Ta suggestion ici..." required></textarea>
+
+        <div class="popup-btns">
+          <button type="submit" class="contact-btn popup-ok-btn">Envoyer</button>
+          <button type="button" class="contact-btn popup-ok-btn" id="close-suggestion">Annuler</button>
+        </div>
+      </form>
+      <div id="suggestion-result" style="margin-top:1em;color:#ffe0a3;display:none;"></div>
+    </div>
   </div>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
@@ -90,118 +90,6 @@
         btn.onmouseleave = () => btn.style.background = "linear-gradient(90deg, #ff9100 60%, #ffb300 100%)";
       });
 
-      // --- Konami Code Easter Egg ---
-      let konami = [38,38,40,40,37,39,37,39,66,65], kpos = 0;
-      window.addEventListener('keydown', e => {
-        if (e.keyCode === konami[kpos]) {
-          kpos++;
-          if (kpos === konami.length) {
-            showLoannCodesPopup();
-            kpos = 0;
-          }
-        } else {
-          kpos = 0;
-        }
-      });
-
-      // Fonction pour afficher le popup LoannCodes
-      function showLoannCodesPopup() {
-        // Overlay noir qui prend toute la page
-        let overlay = document.createElement('div');
-        overlay.style.position = "fixed";
-        overlay.style.left = "0";
-        overlay.style.top = "0";
-        overlay.style.width = "100vw";
-        overlay.style.height = "100vh";
-        overlay.style.background = "#000";
-        overlay.style.zIndex = "99998";
-        overlay.style.display = "flex";
-        overlay.style.flexDirection = "column";
-        overlay.style.justifyContent = "center";
-        overlay.style.alignItems = "center";
-        overlay.style.animation = "fadeInOverlay 0.3s";
-        document.body.appendChild(overlay);
-
-        // Terminal qui prend toute la largeur
-        let terminal = document.createElement('div');
-        terminal.style.width = "100vw";
-        terminal.style.height = "100vh";
-        terminal.style.display = "flex";
-        terminal.style.flexDirection = "column";
-        terminal.style.justifyContent = "center";
-        terminal.style.alignItems = "center";
-        terminal.style.background = "transparent";
-        terminal.style.color = "#00ff00";
-        terminal.style.fontFamily = "Fira Mono, monospace";
-        terminal.style.fontSize = "1.2em";
-        terminal.innerHTML = `
-          <div style="width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;">
-            <div id="terminal-output" style="background:#181818;border-radius:12px;padding:1.5em;min-height:120px;max-height:40vh;overflow-y:auto;margin-bottom:1.2em;font-size:1em;width:100%;">
-              <div style="color:#0f0;">LoannSMP Terminal<br>
-              Comment t'as trouvé ça ??</div>
-            </div>
-            <div style="display:flex;gap:0.5em;justify-content:center;align-items:center;width:100%;">
-              <span style="color:#00ff00;font-weight:bold;">$</span>
-              <input id="terminal-input" type="text" autocomplete="off" style="flex:1;background:#222;border:none;color:#0f0;font-size:1em;padding:0.7em 1em;border-radius:8px;outline:none;">
-              <button id="terminal-enter" style="background:#00ff00;color:#111;border:none;border-radius:8px;padding:0.7em 1.5em;font-weight:bold;cursor:pointer;">Entrer</button>
-            </div>
-          </div>
-        `;
-        overlay.appendChild(terminal);
-
-        // Fermer le terminal
-        document.getElementById('terminal-close').onclick = () => overlay.remove();
-        overlay.onclick = e => {
-          if (e.target === overlay) overlay.remove();
-        };
-
-        // Terminal logic
-        const output = document.getElementById('terminal-output');
-        const input = document.getElementById('terminal-input');
-        const enterBtn = document.getElementById('terminal-enter');
-
-        function printLine(text, color="#0f0") {
-          const line = document.createElement('div');
-          line.textContent = text;
-          line.style.color = color;
-          output.appendChild(line);
-          output.scrollTop = output.scrollHeight;
-        }
-
-        function handleCommand(cmd) {
-          const val = cmd.trim().toLowerCase();
-          printLine("$ " + cmd, "#00ff00");
-          if (!val) return;
-          // Commandes custom
-          if (val === "gamemode creative") {
-            printLine("-1355334 social credits", "#e53935");
-          } else if (val === "help") {
-            printLine("J'ai ton IP.", "#ffb300");
-          } else if (val === "op me") {
-            printLine("Code : qCfhXQQtHynE", "#4caf50");
-          } else if (val === "clear") {
-            output.innerHTML = "";
-          } else if (val === "exit" || val === "quit") {
-            overlay.remove();
-          } else {
-            printLine("Commande inconnue.", "#fff");
-          }
-        }
-
-        enterBtn.onclick = () => {
-          handleCommand(input.value);
-          input.value = "";
-          input.focus();
-        };
-        input.addEventListener('keydown', e => {
-          if (e.key === "Enter") {
-            handleCommand(input.value);
-            input.value = "";
-          }
-        });
-
-        input.focus();
-      }
 
       // Ajoute les animations CSS dynamiquement
       const style = document.createElement('style');
@@ -227,50 +115,23 @@
       // Tableau de phrases aléatoires
       const phrases = [
         "tkt frr on jette 2 diamants dans la lave et on se le give",
-        "MEC FAUT ABSOLUMENT INSTALLER AVARITIA",
-        "y'a au moins 10 easter egg sur ce site hein",
+        "MEC FAUT ABSOLUMENT INSTALLER AVARITIA !!!!!",
         "faut installer draconic evolution sinon je viens pas !!1!",
         "oui jtm bifurlo",
-        "on a plus de budget pour cette saison donc ce site mine des cryptomonnaies",
         "trop drole quoi (feur)",
-        "au nom de la loi, je te ban pour 1 an",
-        "t'as pas le droit de faire ça, c'est pas legit'",
-        "pas d'inspi",
-        "0 secrets tkt",
-        "celle ci va durer tkt",
-        "c'est pas un easter egg, c'est un bug",
+        "celle saison va durer tkt",
         "serveur optimisé pour les rtx 5090",
-        "j'ai pas de vie, j'ai codé ce site",
-        "oui c aléatoire",
-        "nigger",
-        "je suis pas raciste mais...",
         "mec cette fois-ci on se give pas de stuff",
         "nigger",
-        "c'est rien c'est juste un easter egg",
         "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
         "A partir de maintenant, tous les joueurs devront payer 34.65€ pour jouer car on a plus de budget",
-        "t'as pas le droit de faire ça, c'est pas legit'",
         "PAS DE WURST ON A DIT",
-        "au nom jsuis pas gay",
-        "C'EST BANNI",
-        "HAUT HAUT BAS BAS GAUCHE DROITE GAUCHE DROITE B A",
-        "je suis pas raciste mais...",
-        "t'as pas le droit de faire ça, c'est pas legit'",
+        "C'EST BAN",
         "je suis pas raciste mais...",
         "je suis PAS RACISTE MERDE",
         "azz c bon toi t'es ban def",
         "cette fois-ci on se give pas de stuff",
         "tkt frr on jette 2 diamants dans la lave et on se le give",
-        "tkt frr on jette 2 diamants dans la lave et on se le give",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
         "saison 2524425"
       ];
 
@@ -281,20 +142,8 @@
         subtitle.textContent = randomPhrase;
       }
 
-      // Gestion du toggle Infos
-      const toggleInfos = document.getElementById('toggle-infos');
-      const infosPanel = document.querySelector('.infos-popup');
-
-      toggleInfos.addEventListener('change', () => {
-        if (toggleInfos.checked) {
-          infosPanel.style.display = 'flex';
-          setTimeout(() => infosPanel.style.opacity = '1', 10);
-        } else {
-          infosPanel.style.opacity = '0';
-          setTimeout(() => infosPanel.style.display = 'none', 300);
-        }
-      });
     });
   </script>
+  <script src="suggestion.js"></script>
 </body>
 </html>

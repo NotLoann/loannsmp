@@ -53,9 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
       await fetch(webhook, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: `💡 **Suggestion de ${pseudoVal}** \n\n- "${text}"`})
+        body: JSON.stringify({ content: `**Demande de Whitelist**\n\nPseudo discord/mc : ${pseudoVal}** \n\n- Message : "${text}"`})
       });
-      result.textContent = "Suggestion envoyée. Merci ! 🙏";
+      result.textContent = "Demande de whitelist envoyée.";
       result.style.color = "#ffe0a3";
       setTimeout(() => {
         popup.classList.remove('open');

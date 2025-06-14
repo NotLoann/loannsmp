@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pseudo = document.getElementById('suggestion-pseudo');
   const textarea = document.getElementById('suggestion-text');
   const result = document.getElementById('suggestion-result');
-  const webhook = "https://discord.com/api/webhooks/1380538765008830535/oz5a9sTM2hnCv_cCXM7iH8lIG_HPeYVGuWw5x4rvg58ORTFWlTWAcSyAFmeP1MR3lcP6";
+  const webhook = "https://discord.com/api/webhooks/1383561262683652187/yRz6jCxmITlNL3KNy4CRGregQslZ50cvIqGy3Z5smfLD-BSMnPCrfqcdLtVScCUr2GR1";
 
   // Ouvre le popup
   suggestionBtn.onclick = () => {

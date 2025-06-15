@@ -6,8 +6,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const pseudo = document.getElementById('suggestion-pseudo');
   const textarea = document.getElementById('suggestion-text');
   const result = document.getElementById('suggestion-result');
-  const webhook = "https://discord.com/api/webhooks/1383561262683652187/yRz6jCxmITlNL3KNy4CRGregQslZ50cvIqGy3Z5smfLD-BSMnPCrfqcdLtVScCUr2GR1";
 
+
+
+
+
+
+  
+
+  // Par PITIE, ne faites pas de la merde avec ce webhook, personne voit les messages appart les admins donc ça
+  // ne sert à rien, merci, bisous sur la fesse gauche.
+  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  const webhook = "https://discord.com/api/webhooks/1383561262683652187/yRz6jCxmITlNL3KNy4CRGregQslZ50cvIqGy3Z5smfLD-BSMnPCrfqcdLtVScCUr2GR1";
+  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
   // Ouvre le popup
   suggestionBtn.onclick = () => {
     popup.classList.add('open');

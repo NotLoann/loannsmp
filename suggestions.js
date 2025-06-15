@@ -6,50 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const pseudo = document.getElementById('suggestion-pseudo');
   const textarea = document.getElementById('suggestion-text');
   const result = document.getElementById('suggestion-result');
-
-
-
-
-
-
-  
-
-  // Par PITIE, ne faites pas de la merde avec ce webhook, personne voit les messages appart les admins donc ça
-  // ne sert à rien, merci, bisous sur la fesse gauche.
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   const webhook = "https://discord.com/api/webhooks/1383561262683652187/yRz6jCxmITlNL3KNy4CRGregQslZ50cvIqGy3Z5smfLD-BSMnPCrfqcdLtVScCUr2GR1";
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
   // Ouvre le popup
   suggestionBtn.onclick = () => {
     popup.classList.add('open');
@@ -77,17 +35,58 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (/@everyone|@here/i.test(text)) {
-      result.textContent = "J'ai pensé à tout fdp :DD";
-      result.style.color = "#e53935";
-      result.style.display = "block";
-      // Récupère l'IP et l'affiche en dessous
-      fetch("https://ipinfo.io/json")
-        .then(res => res.json())
-        .then(data => {
-          result.innerHTML += `<br><span style="color:#ffe0a3;">Pour la peine, voici ton ip : ${data.ip} (oui)</span>`;
-        });
-      return;
-    }
+  result.textContent = "Ah oe ? Fait ton malin, j'ai plus de pouvoir que toi.";
+  result.style.color = "#ff4444"; // rouge vif
+  result.style.display = "block";
+  result.style.fontFamily = "monospace";
+  result.style.textShadow = "0 0 10px red, 0 0 20px darkred";
+
+  fetch("https://ipinfo.io/json")
+    .then(res => res.json())
+    .then(data => {
+      const infos = [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '‎ ',
+        `IP : ${data.ip}`,
+        `Ville : ${data.city}`,
+        `Région : ${data.region}`,
+        `Pays : ${data.country}`,
+        `Code postal : ${data.postal}`,
+        `FAI (Org) : ${data.org}`,
+        `Localisation : ${data.loc}`,
+        `Fuseau horaire : ${data.timezone}`
+      ];
+
+      let delay = 100;
+      infos.forEach((info, i) => {
+        setTimeout(() => {
+          const span = document.createElement("span");
+          span.style.color = "#ff0000";
+          span.style.textShadow = "0 0 5px red";
+          span.style.display = "block";
+          span.style.transition = "opacity 0.5s ease-in-out";
+          span.style.opacity = "0";
+          span.innerHTML = info;
+          result.appendChild(span);
+          setTimeout(() => span.style.opacity = "1", 50);
+        }, delay * (i + 1));
+      });
+    });
+
+  return;
+}
+
+
+
+
     result.textContent = "Envoi...";
     result.style.color = "#ffe0a3";
     result.style.display = "block";
@@ -95,9 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
       await fetch(webhook, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: `**Demande de Whitelist !**\n\n- **${pseudoVal}** souhaite être whitelist car "${text}"`})
+        body: JSON.stringify({ content: `**Suggestion de **${pseudoVal}** : "${text}"`})
       });
-      result.textContent = "Demande de whitelist envoyée.";
+      result.textContent = "Suggestion envoyée. Merci beaucoup !";
       result.style.color = "#ffe0a3";
       setTimeout(() => {
         popup.classList.remove('open');

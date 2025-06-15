@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       await fetch(webhook, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: `**Demande de Whitelist**\n\nPseudo discord/mc : ${pseudoVal}** \n\n- Message : "${text}"`})
+        body: JSON.stringify({ content: `**Demande de Whitelist !**\n\n- **Pseudo discord/mc :** ${pseudoVal}** \n\n- **Message :** "${text}"`})
       });
       result.textContent = "Demande de whitelist envoyée.";
       result.style.color = "#ffe0a3";

@@ -4,8 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LoannSMP</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Fira+Mono:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    #konami-container {
+      display: none;
+      margin: 2em auto;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5rem;
+      color: #ffcc66; /* orange clair */
+      animation: popIn 0.5s ease forwards;
+    }
+    #konami-video {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 720px;
+      aspect-ratio: 16 / 9;
+      border: 3px solid orange;
+      border-radius: 12px;
+      display: block;           /* enlever les espaces blancs */
+      overflow: hidden;         /* couper ce qui dépasse des bordures */
+      box-sizing: border-box;   /* inclure la bordure dans la taille */
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+  </style>
 </head>
 <body>
   <!-- Loader avec particules -->
@@ -34,18 +60,26 @@
         <button class="contact-btn" onclick="window.open('https://discord.gg/Y7uwTgYcAc','_blank')">Discord</button>
         <button class="contact-btn" id="suggestion-btn" type="button">Whitelist</button>
       </div>
+      <div id="konami-container">
+        Imagine tu te fais rickroll en big 2025 par Loann qui t'as promis l'admin (la honte)
+        <br />
+        <video id="konami-video" controls autoplay loop>
+          <source src="" type="video/mp4" />
+          Votre navigateur ne supporte pas la vidéo.
+        </video>
+      </div>
       <div class="footer">
         © 2025 LoannSMP — Sortie le 31/03/2026
       </div>
     </div>
-  </div> <!-- fin de .main-flex -->
+  </div>
+
   <div id="suggestion-popup" class="suggestion-popup">
     <div class="suggestion-popup-content">
       <h2>Être Whitelist</h2>
       <form id="suggestion-form" autocomplete="off">
-        <input id="suggestion-pseudo" type="text" placeholder="Pseudo Discord et Minecraft" required>
+        <input id="suggestion-pseudo" type="text" placeholder="Pseudo Discord et Minecraft" required />
         <textarea id="suggestion-text" placeholder="Pourquoi ?" required></textarea>
-
         <div class="popup-btns">
           <button type="submit" class="contact-btn popup-ok-btn">Envoyer</button>
           <button type="button" class="contact-btn popup-ok-btn" id="close-suggestion">Annuler</button>
@@ -54,9 +88,9 @@
       <div id="suggestion-result" style="margin-top:1em;color:#ffe0a3;display:none;"></div>
     </div>
   </div>
+
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      // Loader avec particules puis bg orange puis fade out
       const loader = document.getElementById('loader');
       const container = document.querySelector('.container');
       setTimeout(() => {
@@ -71,7 +105,6 @@
         }, 900);
       }, 900);
 
-      // Applique le thème orange de base
       document.body.style.background = "#111";
       document.body.style.color = "#fff";
       document.querySelectorAll('.contact-btn').forEach(btn => {
@@ -81,59 +114,50 @@
         btn.onmouseleave = () => btn.style.background = "linear-gradient(90deg, #ff9100 60%, #ffb300 100%)";
       });
 
-
-      // Ajoute les animations CSS dynamiquement
-      const style = document.createElement('style');
-      style.innerHTML = `
-        @keyframes popIn {
-          from { opacity:0; transform:translate(-50%,-50%) scale(0.8);}
-          to   { opacity:1; transform:translate(-50%,-50%) scale(1);}
-        }
-        @keyframes fadeInOverlay {
-          from { opacity:0;}
-          to   { opacity:1;}
-        }
-      `;
-      document.head.appendChild(style);
-
-      // --- Status Fix (optionnel, à adapter selon ton JS backend) ---
-      // Si tu veux afficher un vrai status, il faut un backend ou une API Minecraft.
-      // Ici, on laisse "Status : ..." par défaut.
-
       document.getElementById('status-dot').style.background = "#e53935";
       document.getElementById('status-text').textContent = "Status : Offline";
 
-      // Tableau de phrases aléatoires
       const phrases = [
-        "tkt frr on jette 2 diamants dans la lave et on se le give",
-        "MEC FAUT ABSOLUMENT INSTALLER AVARITIA !!!!!",
-        "faut installer draconic evolution sinon je viens pas !!1!",
-        "oui jtm bifurlo",
-        "trop drole quoi (feur)",
-        "celle saison va durer tkt",
-        "serveur optimisé pour les rtx 5090",
-        "mec cette fois-ci on se give pas de stuff",
-        "nigger",
+        "Mais nan frrot on jette 2 diamants dans la lave et on se le /give",
+        "Faut absolument installer avaritia c'est hyper important",
+        "Si y'a pas de draconic evolution, je viens pas.",
+        "Dédicace à bifurlo (tsait le mec ...)",
+        "Trop drole quoi (feur)",
+        "Cette saison va durer tkt",
         "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "A partir de maintenant, tous les joueurs devront payer 34.65€ pour jouer car on a plus de budget",
-        "PAS DE WURST ON A DIT",
-        "C'EST BAN",
-        "je suis pas raciste mais...",
-        "je suis PAS RACISTE MERDE",
-        "azz c bon toi t'es ban def",
-        "cette fois-ci on se give pas de stuff",
-        "tkt frr on jette 2 diamants dans la lave et on se le give",
-        "saison 2524425",
-        "Pour les nerds, le code du site est disponible : https://github.com/NotLoann/loannsmp.github.io"
+        "A partir de maintenant, tous les joueurs devront payer 35€ pour jouer car on a plus de budget",
+        "Cette fois-ci on se give pas de stuff",
       ];
-
-      // Remplace le texte du sous-titre par une phrase aléatoire
       const subtitle = document.getElementById('subtitle');
       if (subtitle) {
         const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
         subtitle.textContent = randomPhrase;
       }
 
+      // Konami Code
+      const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight'];
+      let konamiIndex = 0;
+      document.addEventListener('keydown', (e) => {
+        if (e.key === konamiCode[konamiIndex]) {
+          konamiIndex++;
+          if (konamiIndex === konamiCode.length) {
+            activateRickroll();
+            konamiIndex = 0;
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      });
+
+      function activateRickroll() {
+        const container = document.getElementById('konami-container');
+        container.style.display = 'block';
+
+        const video = document.getElementById('konami-video');
+        video.querySelector('source').src = "https://notloann.github.io/rickroll/rickroll.mp4";
+        video.load();
+        video.play();
+      }
     });
   </script>
   <script src="whitelist.js"></script>

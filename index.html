@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
+<link rel="icon" type="image/png" href="profile.png">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -13,7 +15,6 @@
       text-align: center;
       font-family: 'Montserrat', sans-serif;
       font-size: 1.5rem;
-      color: #ffcc66; /* orange clair */
       animation: popIn 0.5s ease forwards;
     }
     #konami-video {
@@ -21,23 +22,54 @@
       width: 100%;
       max-width: 720px;
       aspect-ratio: 16 / 9;
-      border: 3px solid orange;
-      border-radius: 12px;
-      display: block;           /* enlever les espaces blancs */
-      overflow: hidden;         /* couper ce qui dépasse des bordures */
-      box-sizing: border-box;   /* inclure la bordure dans la taille */
+      display: block;
+      overflow: hidden;
     }
     @keyframes popIn {
       from { opacity: 0; transform: scale(0.8); }
       to   { opacity: 1; transform: scale(1); }
     }
+
+    .modpack-popup {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modpack-popup-content {
+      background: #1e1e1e;
+      padding: 2em;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      width: 90%;
+      max-width: 600px;
+      transform: translateY(20px);
+      opacity: 0;
+      animation: fadeSlideIn 0.4s ease-out forwards;
+    }
+
+    @keyframes fadeSlideIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Loader avec particules -->
+  <!-- Loader -->
   <div id="loader">
     <span class="loader-dot-grow"></span>
   </div>
+
   <div class="main-flex">
     <div class="container" style="opacity:0;">
       <h1>LoannSMP</h1>
@@ -53,15 +85,15 @@
         </div>
         <div class="version-block">
           <span class="version-label">Version :</span>
-          <span class="version-value">BM Revelation II 2.0.1</span>
+          <span class="version-value">1.20.1</span>
         </div>
       </div>
       <div class="buttons-row">
         <button class="contact-btn" onclick="window.open('https://discord.gg/Y7uwTgYcAc','_blank')">Discord</button>
-        <button class="contact-btn" id="suggestion-btn" type="button">Idées</button>
+        <button class="contact-btn" id="modpack-btn" type="button">Modpack</button>
       </div>
       <div id="konami-container">
-        Imagine tu te fais rickroll en big 2025 par Loann qui t'as promis l'admin (la honte)
+        La vidéo parle d'elle-même...
         <br />
         <video id="konami-video" controls autoplay loop>
           <source src="" type="video/mp4" />
@@ -74,18 +106,20 @@
     </div>
   </div>
 
-  <div id="suggestion-popup" class="suggestion-popup">
-    <div class="suggestion-popup-content">
-      <h2>Envoyer une suggestion</h2>
-      <form id="suggestion-form" autocomplete="off">
-        <input id="suggestion-pseudo" type="text" placeholder="Nom" required />
-        <textarea id="suggestion-text" placeholder="Suggestion" required></textarea>
-        <div class="popup-btns">
-          <button type="submit" class="contact-btn popup-ok-btn">Envoyer</button>
-          <button type="button" class="contact-btn popup-ok-btn" id="close-suggestion">Annuler</button>
-        </div>
-      </form>
-      <div id="suggestion-result" style="margin-top:1em;color:#ffe0a3;display:none;"></div>
+  <!-- Popup Modpack -->
+  <div id="modpack-popup" class="modpack-popup">
+    <div class="modpack-popup-content">
+      <h1>Modpack</h1>
+      <h2>BM Revelations II - Version 2.0.1</h2>
+      <p>Ce modpack, nécessaire pour rejoindre le serveur. Il contient environ 200 mods et il est basé sur l'adventure et la technologie !</p>
+      <p>Pour le télécharger, cliquez sur le bouton ci-dessous :</p>
+      <h5>Note : Il est extrêmement conseiller d'utiliser l'application Curseforge. Pour les joueurs cracké, une solution sera bientôt disponible. INSTALLEZ BIEN LA VERSION 2.0.1 ET PAS LA DERNIERE DISPONIBLE !!!</h6>
+      <button id="curseforge-btn" class="contact-btn" style="margin-top: 1em;">
+        Télécharger
+      </button>
+      <div style="margin-top:1.5em;">
+        <button class="contact-btn" id="close-modpack">Fermer</button>
+      </div>
     </div>
   </div>
 
@@ -118,15 +152,13 @@
       document.getElementById('status-text').textContent = "Status : Online";
 
       const phrases = [
-        "Mais nan frrot on jette 2 diamants dans la lave et on se le /give",
-        "Faut absolument installer avaritia c'est hyper important",
-        "Si y'a pas de draconic evolution, je viens pas.",
-        "Dédicace à bifurlo (tsait le mec ...)",
-        "Trop drole quoi (feur)",
+        "Merci à mon e-kitten Bifurlo (qui est trans) de host ce magnifique serveur avec son pc de la nasa",
+        "10€ pour un grade admin, 20€ pour tout le serveur",
+        "Niggers, nigger, nigga, nga, bifurlo",
         "Cette saison va durer tkt",
-        "POURQUOI T'AS FAIT SPAWN DES DRAGONS DANS LA BASE ????!!!",
-        "A partir de maintenant, tous les joueurs devront payer 35€ pour jouer car on a plus de budget",
-        "Cette fois-ci on se give pas de stuff",
+        "J'ai pas d'inspi",
+        "Le saviez-vous ? Le texte aléatoire de ce site change toutes les semaines !",
+        "Tapez 'bifurlo' pour voir sa vraie face cachée."
       ];
       const subtitle = document.getElementById('subtitle');
       if (subtitle) {
@@ -135,7 +167,7 @@
       }
 
       // Konami Code
-      const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight'];
+      const konamiCode = ['b','i','f','u','r','l', 'o'];
       let konamiIndex = 0;
       document.addEventListener('keydown', (e) => {
         if (e.key === konamiCode[konamiIndex]) {
@@ -154,12 +186,29 @@
         container.style.display = 'block';
 
         const video = document.getElementById('konami-video');
-        video.querySelector('source').src = "https://notloann.github.io/rickroll/rickroll.mp4";
+        video.querySelector('source').src = "https://notloann.github.io/kitten/bifurlo.mp4";
         video.load();
         video.play();
       }
+
+      // Popup Modpack
+      const modpackBtn = document.getElementById('modpack-btn');
+      const modpackPopup = document.getElementById('modpack-popup');
+      const closeModpack = document.getElementById('close-modpack');
+      const curseforgeBtn = document.getElementById('curseforge-btn');
+
+      modpackBtn.addEventListener('click', () => {
+        modpackPopup.style.display = 'flex';
+      });
+
+      closeModpack.addEventListener('click', () => {
+        modpackPopup.style.display = 'none';
+      });
+
+      curseforgeBtn.addEventListener('click', () => {
+        window.open('https://www.curseforge.com/minecraft/modpacks/bm-revelations-2/files/all?page=1', '_blank');
+      });
     });
   </script>
-  <script src="suggestions.js"></script>
 </body>
 </html>

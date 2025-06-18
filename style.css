@@ -181,8 +181,8 @@ h1 {
   animation: pulseDot 1.5s infinite;
 }
 @keyframes pulseDot {
-  0%,100% { box-shadow: 0 0 8px #51ff00;}
-  50% { box-shadow: 0 0 18px #51ff00;}
+  0%,100% { box-shadow: 0 0 8px #FFFF00;}
+  50% { box-shadow: 0 0 18px #FFFF00;}
 }
 
 /* Infos SMP */

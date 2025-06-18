@@ -62,6 +62,15 @@
         opacity: 1;
       }
     }
+
+    /* Ajout style boutons popup modpack pour espacement */
+    .modpack-buttons {
+      margin-top: 1.5em;
+      display: flex;
+      gap: 1em;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
   </style>
 </head>
 <body>
@@ -112,13 +121,18 @@
       <h1>Modpack</h1>
       <h2>BM Revelations II - Version 2.0.1</h2>
       <p>Ce modpack, nécessaire pour rejoindre le serveur. Il contient environ 200 mods et il est basé sur l'adventure et la technologie !</p>
-      <p>Pour le télécharger, cliquez sur le bouton ci-dessous :</p>
-      <h5>Note : Il est extrêmement conseiller d'utiliser l'application Curseforge. Pour les joueurs cracké, une solution sera bientôt disponible. INSTALLEZ BIEN LA VERSION 2.0.1 ET PAS LA DERNIERE DISPONIBLE !!!</h6>
-      <button id="curseforge-btn" class="contact-btn" style="margin-top: 1em;">
-        Télécharger
-      </button>
-      <div style="margin-top:1.5em;">
-        <button class="contact-btn" id="close-modpack">Fermer</button>
+      <p>Pour le télécharger, cliquez sur l'un des boutons ci-dessous :</p>
+      <h5>Note : Il est extrêmement conseillé d'utiliser l'application Curseforge. Pour les joueurs crackés, une solution sera bientôt disponible. INSTALLEZ BIEN LA VERSION 2.0.1 ET PAS LA DERNIÈRE DISPONIBLE !!!</h5>
+      <div class="modpack-buttons">
+        <button id="curseforge-btn" class="contact-btn">
+          Télécharger
+        </button>
+        <button id="alternative-installer-btn" class="contact-btn">
+          Alternative
+        </button>
+        <button id="close-modpack" class="contact-btn" style="background:#444; color:#fff;">
+          Fermer
+        </button>
       </div>
     </div>
   </div>
@@ -196,6 +210,7 @@
       const modpackPopup = document.getElementById('modpack-popup');
       const closeModpack = document.getElementById('close-modpack');
       const curseforgeBtn = document.getElementById('curseforge-btn');
+      const alternativeInstallerBtn = document.getElementById('alternative-installer-btn');
 
       modpackBtn.addEventListener('click', () => {
         modpackPopup.style.display = 'flex';
@@ -207,6 +222,11 @@
 
       curseforgeBtn.addEventListener('click', () => {
         window.open('https://www.curseforge.com/minecraft/modpacks/bm-revelations-2/files/all?page=1', '_blank');
+      });
+
+      alternativeInstallerBtn.addEventListener('click', () => {
+        // Remplace le lien ci-dessous par ton lien d'installeur alternatif
+        window.open('https://mega.nz/file/vlEQxSoJ#I6ByULCEXh-bJVt2OIDA5Z5LkR1vR2Aoo-DZyP4BuFg', '_blank');
       });
     });
   </script>

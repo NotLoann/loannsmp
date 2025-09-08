@@ -1,250 +1,599 @@
 <!DOCTYPE html>
 <html lang="fr">
-<link rel="icon" type="image/png" href="icon.png">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MC Moddé S4</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Fira+Mono:wght@500&display=swap" rel="stylesheet" />
-  <style>
-    #konami-container {
-      display: none;
-      margin: 2em auto;
-      text-align: center;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.5rem;
-      animation: popIn 0.5s ease forwards;
-    }
-
-    #konami-video {
-      margin-top: 20px;
-      width: 100%;
-      max-width: 720px;
-      aspect-ratio: 16 / 9;
-      display: block;
-      overflow: hidden;
-    }
-
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.8); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-
-    .modpack-popup {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modpack-popup-content {
-      background: #1e1e1e;
-      padding: 2em;
-      border-radius: 12px;
-      color: #fff;
-      font-family: 'Montserrat', sans-serif;
-      width: 90%;
-      max-width: 600px;
-      transform: translateY(20px);
-      opacity: 0;
-      animation: fadeSlideIn 0.4s ease-out forwards;
-    }
-
-    @keyframes fadeSlideIn {
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    .modpack-buttons {
-      margin-top: 1.5em;
-      display: flex;
-      gap: 1em;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    /* Vidéo de fond */
-    #background-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: -1;
-      filter: brightness(0.4);
-      opacity: 0;
-      transition: opacity 1.2s ease;
-      pointer-events: none;
-    }
-
-    .container {
-  background: rgba(30, 30, 30, 0.75);
-  backdrop-filter: blur(5px);
-  border-radius: 16px;
-  padding: 2rem;
-}
-
-  </style>
-</head>
-
-<body>
-  <!-- Vidéo de fond -->
-  <video id="background-video" autoplay muted loop playsinline>
-    <source src="background.mp4" type="video/mp4">
-    Votre navigateur ne supporte pas la vidéo.
-  </video>
-
-  <!-- Loader -->
-  <div id="loader">
-    <span class="loader-dot-grow"></span>
-  </div>
-
-  <div class="main-flex">
-    <div class="container" style="opacity:0;">
-      <h1>MC Moddé S4</h1>
-      <div class="subtitle" id="subtitle">Le site officiel !</div>
-      <div class="status-block" id="status-block">
-        <span class="status-dot" id="status-dot"></span>
-        <span id="status-text">Status : ...</span>
-      </div>
-      <div class="infos-smp">
-        <div class="ip-block">
-          <span class="ip-label">IP :</span>
-          <span class="ip-value" id="ip-value" style="cursor:default;">176.151.34.165</span>
-        </div>
-        <div class="version-block">
-          <span class="version-label">Host :</span>
-          <span class="version-value">Bifurlo</span>
-        </div>
-      </div>
-      <div class="buttons-row">
-        <button class="contact-btn" onclick="window.open('https://discord.gg/Y7uwTgYcAc','_blank')">Discord</button>
-        <button class="contact-btn" id="modpack-btn" type="button">Modpack</button>
-      </div>
-      <div id="konami-container">
-        La vidéo parle d'elle-même...
-        <br />
-        <video id="konami-video" controls autoplay loop>
-          <source src="" type="video/mp4" />
-          Votre navigateur ne supporte pas la vidéo.
-        </video>
-      </div>
-      <div class="footer">
-        © 2025 Minecraft Moddé
-      </div>
-    </div>
-  </div>
-
-  <!-- Popup Modpack -->
-  <div id="modpack-popup" class="modpack-popup">
-    <div class="modpack-popup-content">
-      <h1>Modpack</h1>
-      <h2>BM Revelations II - Version 2.0.1</h2>
-      <p>Ce modpack, nécessaire pour rejoindre le serveur. Il contient environ 200 mods et il est basé sur l'adventure et la technologie !</p>
-      <p>Pour le télécharger, cliquez sur l'un des boutons ci-dessous :</p>
-      <h5>Note : Il est extrêmement conseillé d'utiliser l'application Curseforge. Si vous êtes crack, cliquez sur "Alternative". INSTALLEZ BIEN (si vous utilisez curseforge) LA VERSION 2.0.1 ET PAS LA DERNIÈRE DISPONIBLE !!!</h5>
-      <div class="modpack-buttons">
-        <button id="curseforge-btn" class="contact-btn">Télécharger</button>
-        <button id="alternative-installer-btn" class="contact-btn">Alternative</button>
-        <button id="close-modpack" class="contact-btn" style="background:#444; color:#fff;">Fermer</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader');
-      const container = document.querySelector('.container');
-      const bgVideo = document.getElementById('background-video');
-
-      setTimeout(() => {
-        loader.classList.add('expand');
-        setTimeout(() => {
-          loader.classList.add('fade-out');
-          setTimeout(() => {
-            loader.style.display = 'none';
-            container.style.opacity = 1;
-            container.classList.add('show-anim');
-            bgVideo.style.opacity = 1; // Affiche la vidéo de fond
-          }, 700);
-        }, 900);
-      }, 900);
-
-      document.body.style.background = "#111";
-      document.body.style.color = "#fff";
-
-      document.querySelectorAll('.contact-btn').forEach(btn => {
-        btn.style.background = "linear-gradient(90deg, #ff9100 60%, #ffb300 100%)";
-        btn.style.color = "#111";
-        btn.onmouseenter = () => btn.style.background = "linear-gradient(90deg, #ffe0a3 60%, #fff3cd 100%)";
-        btn.onmouseleave = () => btn.style.background = "linear-gradient(90deg, #ff9100 60%, #ffb300 100%)";
-      });
-
-      document.getElementById('status-dot').style.background = "#FFFF00";
-      document.getElementById('status-text').textContent = "Status : Ouvert quand Bifurlo veut bien";
-
-      const phrases = [
-        "Merci à mon e-kitten Bifurlo (qui est trans) de host ce magnifique serveur avec son pc de la nasa",
-        "10€ pour un grade admin, 20€ pour tout le serveur",
-        "Niggers, nigger, nigga, nga, bifurlo",
-        "Cette saison va durer tkt",
-        "J'ai pas d'inspi",
-        "Le saviez-vous ? Le texte aléatoire de ce site change toutes les semaines !",
-        "Tapez 'bifurlo' pour voir sa vraie face cachée.",
-        "Le site est bien mieux là non ?"
-      ];
-      const subtitle = document.getElementById('subtitle');
-      if (subtitle) {
-        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-        subtitle.textContent = randomPhrase;
-      }
-
-      const konamiCode = ['b','i','f','u','r','l','o'];
-      let konamiIndex = 0;
-      document.addEventListener('keydown', (e) => {
-        if (e.key === konamiCode[konamiIndex]) {
-          konamiIndex++;
-          if (konamiIndex === konamiCode.length) {
-            activateRickroll();
-            konamiIndex = 0;
-          }
-        } else {
-          konamiIndex = 0;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModdedSMP - Nouvelle Saison & Awards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bleu-clair: #d8e5f5;
+            --bleu-moyen: #BCD0F0;
+            --bleu: #8da4c4;
+            --bleu-foncé: #3c5478;
+            --bleu-très-foncé: #1a2333;
+            --blanc: #fff;
+            --gris-clair: #f0f4f8;
+            --ombre-légère: rgba(0, 0, 0, 0.05);
+            --ombre-moyenne: rgba(0, 0, 0, 0.15);
         }
-      });
 
-      function activateRickroll() {
-        const container = document.getElementById('konami-container');
-        container.style.display = 'block';
-        const video = document.getElementById('konami-video');
-        video.querySelector('source').src = "https://notloann.github.io/kitten/bifurlo.mp4";
-        video.load();
-        video.play();
-      }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: radial-gradient(ellipse at top, var(--bleu-clair) 60%, var(--bleu-moyen) 100%);
+            color: var(--bleu-foncé);
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-      // Modpack popup
-      const modpackBtn = document.getElementById('modpack-btn');
-      const modpackPopup = document.getElementById('modpack-popup');
-      const closeModpack = document.getElementById('close-modpack');
-      const curseforgeBtn = document.getElementById('curseforge-btn');
-      const alternativeInstallerBtn = document.getElementById('alternative-installer-btn');
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
 
-      modpackBtn.addEventListener('click', () => modpackPopup.style.display = 'flex');
-      closeModpack.addEventListener('click', () => modpackPopup.style.display = 'none');
-      curseforgeBtn.addEventListener('click', () => window.open('https://www.curseforge.com/minecraft/modpacks/bm-revelations-2/files/all?page=1', '_blank'));
-      alternativeInstallerBtn.addEventListener('click', () => window.open('https://mega.nz/file/vlEQxSoJ#I6ByULCEXh-bJVt2OIDA5Z5LkR1vR2Aoo-DZyP4BuFg', '_blank'));
-    });
-  </script>
+        .header-btn {
+            background: var(--bleu-foncé);
+            color: var(--blanc);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--ombre-légère);
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .header-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--ombre-moyenne);
+        }
+
+        .welcome-text {
+            background: var(--bleu-foncé);
+            color: var(--blanc);
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: default;
+            box-shadow: 0 4px 15px var(--ombre-légère);
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 32px 16px;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(.77,0,.18,1);
+            overflow-y: auto;
+            height: 100vh;
+            box-sizing: border-box;
+            padding-top: 64px;
+        }
+
+        .container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: var(--bleu-moyen);
+            border-radius: 10px;
+        }
+
+        .logo-text {
+            text-align: center;
+            font-size: clamp(1.8em, 5vw, 2.6em);
+            font-weight: 700;
+            color: var(--bleu-foncé);
+            margin-bottom: 32px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 16px var(--bleu-clair);
+            animation: textPopIn 1.5s cubic-bezier(.77,0,.18,1);
+        }
+
+        .timer-section {
+            background: rgba(228, 237, 248, 0.85);
+            backdrop-filter: blur(5px);
+            border-radius: 24px;
+            padding: 40px 24px;
+            text-align: center;
+            margin: 0 auto 48px auto;
+            max-width: 700px;
+            box-shadow: 0 12px 40px 0 rgba(141, 164, 196, 0.2);
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .timer-section h1 {
+            font-size: clamp(1.8em, 4vw, 2.5em);
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--bleu-foncé);
+        }
+
+        .timer-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .timer {
+            font-size: clamp(2.5em, 6vw, 3.2em);
+            font-weight: 900;
+            color: var(--bleu-foncé);
+            letter-spacing: 3px;
+            text-shadow: 0 4px 20px var(--bleu-moyen);
+            animation: pulse 2s infinite alternate;
+        }
+
+        .timer-section p {
+            font-size: clamp(1em, 2vw, 1.25em);
+            color: var(--bleu-foncé);
+            margin-bottom: 0;
+            margin-top: 10px;
+        }
+        
+        .awards-section {
+            display: none;
+            margin-top: 0;
+            margin-bottom: 32px;
+            text-align: center;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .awards-section h2 {
+            font-size: clamp(1.8em, 4vw, 2.2em);
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--bleu-foncé);
+            letter-spacing: 1px;
+            /* Animation pour le titre */
+            animation: slideInFromLeft 1.5s ease-out;
+        }
+
+        .awards-section > p {
+            font-size: clamp(0.9em, 1.8vw, 1.1em);
+            color: var(--bleu);
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            line-height: 1.6;
+            opacity: 0;
+            /* Animation pour la description générale, décalée de 0.2s */
+            animation: fadeIn 1.5s ease-out 0.2s forwards;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            justify-content: center;
+            gap: 32px;
+            margin-top: 24px;
+        }
+
+        .award-card {
+            background: var(--blanc);
+            border-radius: 18px;
+            padding: 32px 28px;
+            box-shadow: 0 10px 30px var(--ombre-légère);
+            text-align: center;
+            border: 2px solid var(--bleu-clair);
+            transition: transform 0.3s cubic-bezier(.25,.8,.25,1), box-shadow 0.3s;
+            color: var(--bleu-très-foncé);
+            position: relative;
+            overflow: hidden;
+            /* Animation pour chaque carte, décalée */
+            opacity: 0;
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+        
+        .award-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(141, 164, 196, 0.1), transparent 70%);
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .award-card:hover::before {
+            opacity: 1;
+        }
+        
+        .award-card:hover {
+            transform: translateY(-8px) scale(1.04);
+            border-color: var(--bleu-foncé);
+            box-shadow: 0 15px 40px var(--ombre-moyenne);
+            background: var(--gris-clair);
+        }
+
+        .award-card .icon {
+            font-size: 3.5em;
+            margin-bottom: 12px;
+            color: var(--bleu-foncé);
+            text-shadow: 0 2px 8px var(--bleu-moyen);
+            transition: transform 0.4s cubic-bezier(.25,.8,.25,1);
+        }
+
+        .award-card:hover .icon {
+            animation: float 2s infinite alternate;
+        }
+
+        .award-card h3 {
+            font-weight: 900;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .award-card p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: var(--bleu);
+        }
+
+        #loader {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        #liquid-bar {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 12vh;
+            background: var(--blanc);
+            border-radius: 999px;
+            box-shadow: 0 8px 32px 0 rgba(228, 237, 248, 0.18);
+            animation: barGrowWidth 1.2s cubic-bezier(.77,0,.18,1) forwards, barGrowHeight 1.2s cubic-bezier(.77,0,.18,1) 1.2s forwards;
+        }
+
+        @keyframes barGrowWidth {
+            0% { width: 0; }
+            100% { width: 100vw; }
+        }
+
+        @keyframes barGrowHeight {
+            0% { height: 12vh; }
+            100% { height: 100vh; border-radius: 0; }
+        }
+
+        #loader.hide {
+            animation: fadeOutLoader 1s cubic-bezier(.77,0,.18,1) forwards;
+        }
+
+        #loading-text {
+            width: 100vw;
+            text-align: center;
+            color: var(--bleu-foncé);
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 0;
+            margin-top: 32vh;
+            transition: opacity 0.5s;
+            position: absolute;
+            top: 40%;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+            text-shadow: 0 2px 16px #fff;
+        }
+
+        #loader.show-text #loading-text {
+            opacity: 1;
+        }
+
+        @keyframes fadeOutLoader {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 5px var(--bleu-clair); }
+            100% { transform: scale(1.02); text-shadow: 0 0 15px var(--bleu-moyen); }
+        }
+
+        @keyframes slideInFromLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes textPopIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            from { transform: translateY(-3px); }
+            to { transform: translateY(3px); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--bleu-clair);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            color: var(--bleu-foncé);
+            font-size: 2em;
+        }
+
+        .modal-content p {
+            color: var(--bleu);
+            margin-bottom: 25px;
+        }
+        
+        .modal-content input {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--bleu-moyen);
+            font-size: 1.1em;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(3px);
+            transition: all 0.3s ease;
+        }
+        
+        .modal-content input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--bleu);
+        }
+        
+        .modal-content button {
+            background-color: var(--bleu);
+            color: var(--blanc);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .modal-content button:hover {
+            background-color: var(--bleu-foncé);
+            transform: translateY(-2px);
+        }
+
+        .close {
+            color: var(--bleu-foncé);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="header-btn" id="awardsBtn">Awards</button>
+        <div id="authContainer">
+            <button class="header-btn" id="loginBtn">Admin</button>
+        </div>
+    </header>
+    <div id="loader">
+        <div id="liquid-bar"></div>
+        <div id="loading-text">Chargement du panel ModdedSMP...</div>
+    </div>
+    <div class="container" id="mainContent">
+        <div class="logo-text">ModdedSMP</div>
+        <div class="timer-section">
+            <h1>ModdedSMP Saison VI</h1>
+            <div class="timer" id="season-timer">Calcul...</div>
+            <p>La prochaine saison sera un véritable banger, je vais essayer de faire un vrai serveur à la place d'une survie simple et j'ai un discord avec 40 membres actifs sur java si jamais il faut des joueurs pour la saison.</br></br>Tu peux aussi aller check la liste des Modded Awards si jamais ! (peut-être que tu seras admin)</p>
+        </div>
+    </div>
+
+    <section class="awards-section" id="awardsSection">
+        <h2>Modded Awards S5</h2>
+        <p>Les meilleurs joueurs de Minecraft Moddé, répertoriés dans plusieures catégories et qui disposeront de l'admin dans la prochaine saison s'ils y jouent.</p>
+        <div class="awards-grid">
+            <div class="award-card" style="animation-delay: 0.2s;">
+                <div class="icon">🧱</div>
+                <h3>Meilleur Build</h3>
+                <p>Lasermp4 - Elle a littéralement fait le seul "build" du serveur donc bah voilà...</p>
+            </div>
+            <div class="award-card" style="animation-delay: 0.4s;">
+                <div class="icon">🛠️</div>
+                <h3>Technicien</h3>
+                <p>Bifurlo - il a carry sur EnderIO, a fait le digital miner (je crois) et a fait littéralement tout ce qui touchait à la méchanique.</p>
+            </div>
+            <div class="award-card" style="animation-delay: 0.6s;">
+                <div class="icon">🗿</div>
+                <h3>Le Noob</h3>
+                <p>Pas désigné pour l'instant, sauf si Lino le veut...</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Panel Admin</h2>
+            <p>D'ailleurs, tous les essais sont envoyés dans un webhook Discord et bloqués au bout de 3 essais, donc si jamais tu veux essayer de te co, hésite pas !</p>
+            <p id="loginMessage" style="color: red;"></p>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+                <input type="password" id="password" placeholder="Mot de passe" required>
+                <button type="submit">Se connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const users = {
+            "NotLoann": "loannadmin",
+            "Bifurlo": "bifurloadmin"
+
+        };
+        
+        const mainContent = document.getElementById('mainContent');
+        const awardsSection = document.getElementById('awardsSection');
+        const awardsBtn = document.getElementById('awardsBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeBtn = document.querySelector('.close');
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginMessage = document.getElementById('loginMessage');
+        const authContainer = document.getElementById('authContainer');
+
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.getElementById('loader').classList.add('show-text');
+            }, 2400);
+            setTimeout(function() {
+                document.getElementById('loader').classList.add('hide');
+                document.querySelector('.container').style.opacity = 1;
+                document.body.style.overflow = 'auto';
+                document.querySelector('header').style.opacity = 1;
+            }, 3400);
+        });
+
+        let isAwardsVisible = false;
+        awardsBtn.addEventListener('click', () => {
+            if (isAwardsVisible) {
+                mainContent.style.display = 'block';
+                awardsSection.style.display = 'none';
+                awardsBtn.textContent = 'Awards';
+                isAwardsVisible = false;
+            } else {
+                mainContent.style.display = 'none';
+                awardsSection.style.display = 'block';
+                awardsBtn.textContent = 'Retour';
+                isAwardsVisible = true;
+            }
+        });
+
+        function updateTimer() {
+            const now = new Date();
+            const nextSeason = new Date('2026-08-07T00:00:00');
+            const diff = nextSeason - now;
+            const timerElement = document.getElementById('season-timer');
+
+            if (diff <= 0) {
+                timerElement.textContent = "C'est la nouvelle saison !";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            timerElement.textContent = `${days}j ${hours}h ${minutes}m ${seconds}s`;
+        }
+        
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        loginBtn.onclick = function() {
+            loginModal.style.display = 'flex';
+        }
+
+        closeBtn.onclick = function() {
+            loginModal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        }
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            if (users[username] === password) {
+                loginModal.style.display = 'none';
+                loginMessage.textContent = '';
+                usernameInput.value = '';
+                passwordInput.value = '';
+                authContainer.innerHTML = `<span class="welcome-text">Bonjour, ${username}</span>`;
+            } else {
+                loginMessage.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                passwordInput.value = '';
+            }
+        });
+    </script>
 </body>
 </html>
